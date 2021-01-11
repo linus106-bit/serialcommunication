@@ -65,7 +65,7 @@ void serial::sendCVWControl(float V_mm_s, float W_mrad_s){
 }
 
 void serial::sendCDIFFVControl(float VLmm_s, float VRmm_s){
-    string cmd_str = get_cmd("$CVW", VLmm_s, VRmm_s);
+    string cmd_str = get_cmd("$CDIFFV", VLmm_s, VRmm_s);
     const string& cmd = cmd_str;
     // write
     write(serial_port, cmd.c_str(), sizeof(cmd));
