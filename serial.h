@@ -25,7 +25,6 @@ class serial
 public:
     int serial_port;
     struct termios newtio;
-    char read_buf [17];
     int read_bytes;
 
     serial();
@@ -35,6 +34,7 @@ public:
     void serialClose();
     void sendCVWControl(float V_mm_s, float W_mrad_s);
     void sendCDIFFVControl(float VLmm_s, float VRmm_s);
+    void readCDIFFVControl();
 };
 
 #endif // SERIAL_H

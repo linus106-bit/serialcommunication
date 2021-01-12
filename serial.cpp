@@ -10,6 +10,7 @@ serial::~serial()
 {
 }
 
+
 string get_cmd(string str,float var1, float var2){
     stringstream str1;
     str1 << var1;
@@ -23,7 +24,7 @@ void serial::serialOpen(){
     this->serial_port = open("/dev/ttyUSB0", O_RDWR);
 
     if (this->serial_port < 0) {
-        cout << "Error Opening Serial Port = " << serial_port <<endl;
+        printf("Error %i from open: %s\n", errno, strerror(errno));
     }
 }
 
@@ -43,8 +44,9 @@ void serial::serialSet()
 
     tcflush(serial_port, TCIFLUSH);
     tcsetattr(serial_port,TCSANOW,&newtio);
-
 }
+
+
 // Close Serial Port
 void serial::serialClose(){
     close(serial_port);
@@ -58,11 +60,13 @@ void serial::sendCVWControl(float V_mm_s, float W_mrad_s){
     // write
     write(serial_port, cmd.c_str(), sizeof(cmd));
     cout << cmd.c_str() << endl;
-    // read
+    //read
+    char read_buf [32];
     memset(&read_buf, '0', sizeof(read_buf));
     int read_bytes = read(serial_port, &read_buf, sizeof(read_buf));
     printf("Bytes: %i, Message: %s\n", read_bytes, read_buf);
 }
+
 
 void serial::sendCDIFFVControl(float VLmm_s, float VRmm_s){
     string cmd_str = get_cmd("$CDIFFV", VLmm_s, VRmm_s);
@@ -70,8 +74,18 @@ void serial::sendCDIFFVControl(float VLmm_s, float VRmm_s){
     // write
     write(serial_port, cmd.c_str(), sizeof(cmd));
     cout << cmd.c_str() << endl;
-    // read
-    memset(&read_buf, '0', sizeof(read_buf));
+}
+
+void serial::readCDIFFVControl(){
+    string cmd_str = "$QVW\r\n";
+    const string& cmd = cmd_str;
+    // write
+    write(serial_port, cmd.c_str(), sizeof(cmd));
+    cout << cmd.c_str() << endl;
+    // sleep(1);
+    //read
+    char read_buf [32];
+    memset(&read_buf, ' ', sizeof(read_buf));
     int read_bytes = read(serial_port, &read_buf, sizeof(read_buf));
     printf("Bytes: %i, Message: %s\n", read_bytes, read_buf);
 }
