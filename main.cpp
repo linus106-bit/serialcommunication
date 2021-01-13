@@ -29,7 +29,7 @@ int main() // int argc, char *argv[]
     int key;
 
     while(stop == 1){
-        cout << "Press Key: 1,2,3,4,5,0 \n[Forward: 1 Backward: 2 Left: 3 Right: 4 Stop: 5  END: 6]" << endl;
+        cout << "Press Key! \n[Forward: w Backward: x Left: a Right: d Stop: s  END: q]" << endl;
         key = getch();
         switch(key){
             case 119: // Forward
